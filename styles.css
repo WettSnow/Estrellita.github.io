@@ -1,0 +1,223 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500&display=swap');
+
+:root {
+  color-scheme: dark;
+  --ink: #faf5ff;
+  --space-deep: #100719;
+}
+
+* {
+  box-sizing: border-box;
+  font-style: normal;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  overflow: hidden;
+  background: var(--space-deep);
+}
+
+body {
+  color: var(--ink);
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+.universe {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--space-deep);
+}
+
+#sky {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  cursor: grab;
+  touch-action: none;
+  outline: none;
+}
+
+#sky.is-dragging { cursor: grabbing; }
+#sky.is-hovering-star { cursor: pointer; }
+
+/* =========================================================
+   PANTALLA INICIAL MINIMALISTA
+   ========================================================= */
+.opening-screen {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 28px;
+  background: radial-gradient(circle at 50% 50%, rgba(28, 10, 34, .22), rgba(10, 5, 18, .58));
+  transition:
+    opacity 1.1s cubic-bezier(.22, 1, .36, 1),
+    transform 1.2s cubic-bezier(.22, 1, .36, 1);
+}
+
+.opening-screen.is-leaving {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(1.08);
+}
+
+.opening-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  max-width: 480px;
+  text-align: center;
+}
+
+.opening-text {
+  margin: 0 0 32px;
+  color: rgba(255, 246, 252, .94);
+  font-size: clamp(17px, 2.3vw, 22px);
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: .02em;
+  line-height: 1.65;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, .85);
+}
+
+.opening-button {
+  padding: 11px 32px;
+  border: 1px solid rgba(255, 150, 195, .42);
+  border-radius: 999px;
+  background: rgba(24, 10, 32, .52);
+  backdrop-filter: blur(8px);
+  color: rgba(255, 245, 252, .95);
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: .12em;
+  cursor: pointer;
+  transition: background .25s ease, border-color .25s ease, transform .25s ease, box-shadow .25s ease;
+}
+
+.opening-button:hover {
+  background: rgba(215, 52, 118, .22);
+  border-color: rgba(255, 175, 212, .8);
+  box-shadow: 0 0 24px rgba(255, 72, 142, .25);
+  transform: translateY(-1px);
+}
+
+.opening-button:active {
+  transform: translateY(0);
+}
+
+/* =========================================================
+   CUADROS DE TEXTO MINIMALISTAS EN LAS ESTRELLAS
+   ========================================================= */
+.star-anchor {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.star-note {
+  position: absolute;
+  top: 14px;
+  left: 0;
+  width: min(290px, calc(100vw - 32px));
+  transform: translateX(-50%) translateY(-6px) scale(.94);
+  transform-origin: top center;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    opacity .32s ease,
+    transform .36s cubic-bezier(.16, 1, .3, 1);
+}
+
+.star-anchor.is-flipped .star-note {
+  top: auto;
+  bottom: 14px;
+  display: flex;
+  flex-direction: column-reverse;
+  transform: translateX(-50%) translateY(6px) scale(.94);
+  transform-origin: bottom center;
+}
+
+.star-anchor.is-expanded .star-note {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateX(-50%) translateY(0) scale(1);
+}
+
+.star-note-connector {
+  width: 1px;
+  height: 16px;
+  margin: 0 auto;
+  background: linear-gradient(180deg, rgba(255, 210, 232, .85), rgba(255, 120, 175, .2));
+}
+
+.star-anchor.is-flipped .star-note-connector {
+  background: linear-gradient(0deg, rgba(255, 210, 232, .85), rgba(255, 120, 175, .2));
+}
+
+.star-note-card {
+  position: relative;
+  padding: 15px 28px 15px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 148, 194, .28);
+  background: rgba(18, 8, 26, .78);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, .55),
+    0 0 20px rgba(235, 65, 135, .12);
+  backdrop-filter: blur(10px);
+  text-align: center;
+}
+
+.star-note-close {
+  position: absolute;
+  top: 6px;
+  right: 7px;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 230, 245, .52);
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 14px;
+  font-style: normal;
+  line-height: 1;
+  transition: color .2s;
+}
+
+.star-note-close:hover {
+  color: #ffffff;
+}
+
+.star-note-message {
+  margin: 0;
+  color: rgba(255, 248, 253, .95);
+  font-size: 13.5px;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: .015em;
+  line-height: 1.55;
+}
+
+@media (max-width: 640px) {
+  .opening-content { max-width: 90%; }
+  .star-note { width: min(260px, calc(100vw - 24px)); }
+  .star-note-message { font-size: 13px; }
+}
